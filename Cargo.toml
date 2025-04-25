@@ -1,0 +1,14 @@
+[package]
+name = "leptos_styling"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+
+[dependencies]
+leptos = "0.7.0"
+leptos_meta = "0.7.0"
+turf = { git = "https://github.com/myFavShrimp/turf.git" }
+inventory = "0.3"
+
+[features]
+ssr = []
