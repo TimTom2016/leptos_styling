@@ -1,0 +1,8 @@
+[package]
+name = "test_component"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+leptos = { version = "0.7" }
+leptos_styling = { path = "../../" }

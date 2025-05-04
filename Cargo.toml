@@ -3,12 +3,24 @@ name = "leptos_styling"
 version = "0.1.0"
 edition = "2024"
 license = "MIT"
+authors = ["Tim Persigehl <dev@timtom2016.com>"]
+description = """
+A powerful styling solution for Leptos applications that enables seamless integration
+of CSS and SCSS stylesheets with type-safe class names and zero runtime overhead.
+"""
+documentation = "https://docs.rs/leptos_styling/latest/"
+repository = "https://github.com/TimTom2016/leptos_styling"
+keywords = ["leptos", "web", "CSS", "SCSS", "macro"]
+categories = ["wasm", "web-programming"]
+readme = "README.md"
 
 [dependencies]
 leptos = "0.7.0"
 leptos_meta = "0.7.0"
-turf = { git = "https://github.com/myFavShrimp/turf.git" }
+turf = { version = "0.10.1" }
 inventory = "0.3"
 
 [features]
 ssr = []
+hydrate = []
+csr = []

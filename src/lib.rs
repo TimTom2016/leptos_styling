@@ -1,3 +1,4 @@
+#![doc = include_str!("../README.md")]
 //! A library for managing stylesheets in Leptos applications.
 //! Provides functionality for both server-side rendering (SSR) and client-side styling.
 
@@ -12,6 +13,7 @@ pub use component::StyleSheets;
 
 /// Represents a stylesheet with its name and optional content.
 /// Used to collect and manage stylesheets across the application.
+#[derive(Debug)]
 pub struct StyleSheet {
     /// The name of the stylesheet file
     pub name: &'static str,

@@ -6,7 +6,7 @@
 /// * `name` - The identifier for the stylesheet
 /// * `path` - The path to the stylesheet file
 /// * `file_name` - The output filename for the stylesheet
-#[cfg(feature = "ssr")]
+#[cfg(any(feature = "ssr", feature = "csr"))]
 #[macro_export]
 macro_rules! style_sheet {
     ($name:ident, $path:expr, $file_name:expr) => {
@@ -35,7 +35,7 @@ macro_rules! style_sheet {
 /// * `name` - The identifier for the stylesheet
 /// * `path` - The path to the stylesheet file
 /// * `file_name` - The output filename for the stylesheet
-#[cfg(not(feature = "ssr"))]
+#[cfg(feature = "hydrate")]
 #[macro_export]
 macro_rules! style_sheet {
     ($name:ident, $path:expr, $file_name:expr) => {
@@ -60,25 +60,56 @@ macro_rules! style_sheet {
 ///
 /// # Arguments
 /// * `name` - The identifier for the stylesheet
-/// * `path` - The path to the stylesheet file
 /// * `file_name` - The output filename for the stylesheet
-#[cfg(feature = "ssr")]
+/// * `tokens` - The CSS rules to be included in the stylesheet
+#[cfg(any(feature = "ssr", feature = "csr"))]
+#[macro_export]
 macro_rules! inline_style_sheet {
-    ($name:ident, $path:expr, $file_name:expr) => {
-        // Generate the original macro output in a module
+    // Version with name and file_name
+    ($name:ident, $file_name:expr, $($tokens:tt)*) => {
         mod style_sheet_generated {
-            $crate::inline_style_sheet_inner!($path);
+            $crate::inline_style_sheet_inner!($($tokens)*);
         }
 
-        // Export the ClassName and impl
         pub use style_sheet_generated::ClassName as $name;
-
-        // Conditionally export the STYLE_SHEET
         pub static STYLE_SHEET: &'static str = style_sheet_generated::STYLE_SHEET;
-        // Submit the StyleSheet to inventory
+
         $crate::inventory::submit! {
             $crate::StyleSheet::new(
                 $file_name,
+                Some(style_sheet_generated::STYLE_SHEET),
+            )
+        }
+    };
+
+    // Version with just name (auto-generated file_name)
+    ($name:ident, $($tokens:tt)*) => {
+        mod style_sheet_generated {
+            $crate::inline_style_sheet_inner!($($tokens)*);
+        }
+
+        pub use style_sheet_generated::ClassName as $name;
+        pub static STYLE_SHEET: &'static str = style_sheet_generated::STYLE_SHEET;
+
+        $crate::inventory::submit! {
+            $crate::StyleSheet::new(
+                concat!("inline_", module_path!(), ".css"),
+                Some(style_sheet_generated::STYLE_SHEET),
+            )
+        }
+    };
+
+    // Version without name (auto-generated file_name)
+    ($($tokens:tt)*) => {
+        mod style_sheet_generated {
+            $crate::inline_style_sheet_inner!($($tokens)*);
+        }
+
+        pub static STYLE_SHEET: &'static str = style_sheet_generated::STYLE_SHEET;
+
+        $crate::inventory::submit! {
+            $crate::StyleSheet::new(
+                concat!("inline_", module_path!(), ".css"),
                 Some(style_sheet_generated::STYLE_SHEET),
             )
         }
@@ -89,22 +120,52 @@ macro_rules! inline_style_sheet {
 ///
 /// # Arguments
 /// * `name` - The identifier for the stylesheet
-/// * `path` - The path to the stylesheet file
 /// * `file_name` - The output filename for the stylesheet
-#[cfg(not(feature = "ssr"))]
+/// * `tokens` - The CSS rules to be included in the stylesheet
+#[cfg(feature = "hydrate")]
+#[macro_export]
 macro_rules! inline_style_sheet {
-    ($name:ident, $path:expr, $file_name:expr) => {
-        // Generate the original macro output in a module
+    // Version with name and file_name
+    ($name:ident, $file_name:expr, $($tokens:tt)*) => {
         mod style_sheet_generated {
-            $crate::inline_style_sheet_inner!($path);
+            $crate::inline_style_sheet_inner!($($tokens)*);
         }
 
-        // Export the ClassName and impl
         pub use style_sheet_generated::ClassName as $name;
-        // Submit the StyleSheet to inventory
+
         $crate::inventory::submit! {
             $crate::StyleSheet::new(
                 $file_name,
+                None
+            )
+        }
+    };
+
+    // Version with just name (auto-generated file_name)
+    ($name:ident, $($tokens:tt)*) => {
+        mod style_sheet_generated {
+            $crate::inline_style_sheet_inner!($($tokens)*);
+        }
+
+        pub use style_sheet_generated::ClassName as $name;
+
+        $crate::inventory::submit! {
+            $crate::StyleSheet::new(
+                concat!("inline_", module_path!(), ".css"),
+                None
+            )
+        }
+    };
+
+    // Version without name (auto-generated file_name)
+    ($($tokens:tt)*) => {
+        mod style_sheet_generated {
+            $crate::inline_style_sheet_inner!($($tokens)*);
+        }
+
+        $crate::inventory::submit! {
+            $crate::StyleSheet::new(
+                concat!("inline_", module_path!(), ".css"),
                 None
             )
         }
