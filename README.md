@@ -135,7 +135,6 @@ pub fn App() -> impl IntoView {
 
 - [API Documentation](https://docs.rs/leptos_styling/)
 - [Examples](./examples)
-- [Changelog](./CHANGELOG.md)
 
 ## Contributing
 
