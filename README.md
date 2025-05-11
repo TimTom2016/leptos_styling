@@ -22,10 +22,9 @@ Add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-leptos_styling = "0.2.0"
+leptos_styling = "0.1.1"
 
 [features]
-hydrate = ["leptos_styling/hydrate"]
 ssr = ["leptos_styling/ssr"]
 ```
 
@@ -122,7 +121,6 @@ pub fn App() -> impl IntoView {
 |-----------|--------------------------------------------------|
 | `ssr`     | Enable server-side rendering support              |
 | `csr`     | Enable client-side rendering support              |
-| `hydrate` | Enable hydration support (use with SSR)           |
 
 ## Version Compatibility
 
