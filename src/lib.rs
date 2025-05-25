@@ -61,9 +61,9 @@ unsafe extern "C" {
 }
 /// Initializes the WASM module by calling constructors.
 /// Only available in WASM environments.
-#[cfg(target_family = "wasm")]
 pub fn init() {
     unsafe {
+        #[cfg(target_family = "wasm")]
         __wasm_call_ctors();
     }
 }

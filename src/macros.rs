@@ -35,7 +35,7 @@ macro_rules! style_sheet {
 /// * `name` - The identifier for the stylesheet
 /// * `path` - The path to the stylesheet file
 /// * `file_name` - The output filename for the stylesheet
-#[cfg(feature = "hydrate")]
+#[cfg(not(any(feature = "ssr", feature = "csr")))]
 #[macro_export]
 macro_rules! style_sheet {
     ($name:ident, $path:expr, $file_name:expr) => {
@@ -122,7 +122,7 @@ macro_rules! inline_style_sheet {
 /// * `name` - The identifier for the stylesheet
 /// * `file_name` - The output filename for the stylesheet
 /// * `tokens` - The CSS rules to be included in the stylesheet
-#[cfg(feature = "hydrate")]
+#[cfg(not(any(feature = "ssr", feature = "csr")))]
 #[macro_export]
 macro_rules! inline_style_sheet {
     // Version with name and file_name

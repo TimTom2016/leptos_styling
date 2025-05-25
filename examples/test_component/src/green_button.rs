@@ -1,5 +1,5 @@
 use leptos::prelude::*;
-use leptos_styling::{inline_style_sheet, style_sheet};
+use leptos_styling::style_sheet;
 
 style_sheet!(green_button, "src/green_button.css", "green_button");
 

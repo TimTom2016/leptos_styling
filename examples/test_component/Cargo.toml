@@ -5,4 +5,4 @@ edition = "2024"
 
 [dependencies]
 leptos = { version = "0.8" }
-leptos_styling = { path = "../../" }
+leptos_styling = { path = "../../", features = ["csr"] }
