@@ -17,8 +17,8 @@ readme = "README.md"
 [dependencies]
 leptos = "0.8.0"
 turf = { version = "0.10.1" }
-inventory = "0.3"
+inventory = {version="0.3",optional=true}
 
 [features]
-ssr = []
-csr = []
+ssr = ["dep:inventory"]
+csr = ["dep:inventory"]

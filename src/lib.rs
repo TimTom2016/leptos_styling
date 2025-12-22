@@ -2,10 +2,10 @@
 //! A library for managing stylesheets in Leptos applications.
 //! Provides functionality for both server-side rendering (SSR) and client-side styling.
 
-use std::{ops::Deref, path::Path};
-
+#[cfg(any(feature = "ssr", feature = "csr"))]
 pub use inventory;
 use leptos::config::LeptosOptions;
+use std::{ops::Deref, path::Path};
 pub use turf::{inline_style_sheet as inline_style_sheet_inner, style_sheet as style_sheet_inner};
 mod component;
 mod macros;
@@ -33,6 +33,7 @@ impl StyleSheet {
 }
 
 // Register StyleSheet with inventory
+#[cfg(any(feature = "ssr", feature = "csr"))]
 inventory::collect!(StyleSheet);
 
 /// Generates physical stylesheet files in the specified output directory.
@@ -42,16 +43,29 @@ inventory::collect!(StyleSheet);
 /// * `leptos_option` - Configuration options for Leptos
 #[cfg(feature = "ssr")]
 pub fn generate_style_sheets(leptos_option: LeptosOptions) {
+    use std::collections::HashMap;
     let base_path =
         Path::new(leptos_option.site_root.deref()).join(leptos_option.site_pkg_dir.deref());
+
+    // Group stylesheets by name
+    let mut grouped: HashMap<&str, String> = HashMap::new();
     for style_sheet in inventory::iter::<StyleSheet>() {
         let file_name = if style_sheet.name.ends_with(".css") {
-            style_sheet.name.to_string()
+            style_sheet.name
         } else {
-            format!("{}.css", style_sheet.name)
+            // This will always add ".css" if missing
+            Box::leak(format!("{}.css", style_sheet.name).into_boxed_str())
         };
+        grouped
+            .entry(file_name)
+            .or_default()
+            .push_str(style_sheet.content.unwrap_or_default());
+    }
+
+    // Write combined stylesheets
+    for (file_name, content) in grouped {
         let file_path = base_path.join(file_name);
-        std::fs::write(file_path, style_sheet.content.unwrap_or_default()).unwrap();
+        std::fs::write(file_path, content).unwrap();
     }
 }
 
@@ -61,6 +75,7 @@ unsafe extern "C" {
 }
 /// Initializes the WASM module by calling constructors.
 /// Only available in WASM environments.
+#[cfg(feature = "csr")]
 pub fn init() {
     unsafe {
         #[cfg(target_family = "wasm")]
