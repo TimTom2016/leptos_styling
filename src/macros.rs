@@ -46,13 +46,6 @@ macro_rules! style_sheet {
 
         // Export the ClassName and impl
         pub use style_sheet_generated::ClassName as $name;
-        // Submit the StyleSheet to inventory
-        $crate::inventory::submit! {
-            $crate::StyleSheet::new(
-                $file_name,
-                None
-            )
-        }
     };
 }
 
@@ -133,12 +126,6 @@ macro_rules! inline_style_sheet {
 
         pub use style_sheet_generated::ClassName as $name;
 
-        $crate::inventory::submit! {
-            $crate::StyleSheet::new(
-                $file_name,
-                None
-            )
-        }
     };
 
     // Version with just name (auto-generated file_name)
@@ -149,25 +136,12 @@ macro_rules! inline_style_sheet {
 
         pub use style_sheet_generated::ClassName as $name;
 
-        $crate::inventory::submit! {
-            $crate::StyleSheet::new(
-                concat!("inline_", module_path!(), ".css"),
-                None
-            )
-        }
     };
 
     // Version without name (auto-generated file_name)
     ($($tokens:tt)*) => {
         mod style_sheet_generated {
             $crate::inline_style_sheet_inner!($($tokens)*);
-        }
-
-        $crate::inventory::submit! {
-            $crate::StyleSheet::new(
-                concat!("inline_", module_path!(), ".css"),
-                None
-            )
         }
     };
 }

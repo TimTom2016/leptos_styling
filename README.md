@@ -22,7 +22,7 @@ Add the following to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-leptos_styling = "0.2.0"
+leptos_styling = "0.3.0"
 
 [features]
 ssr = ["leptos_styling/ssr"]
@@ -65,7 +65,7 @@ pub fn MyButtons() -> impl IntoView {
 
 ## Setup
 
-### Client-Side Setup
+### Client-Side Setup(CSR)
 
 ```rust
 #[cfg(feature = "hydrate")]
@@ -79,7 +79,10 @@ pub fn hydrate() {
 }
 ```
 
-### Server-Side Setup
+### Client-Side Setup (SSR)
+No special setup is required. Stylesheets are registered and managed automatically.
+
+### Server-Side Setup(SSR)
 
 ```rust
 async fn main() {
@@ -126,8 +129,8 @@ pub fn App() -> impl IntoView {
 
 | Leptos Styling | Leptos Version |
 |----------------|----------------|
-| 0.2.x         | 0.8           |
-| 0.1.x         | 0.7           |
+| 0.2.x - 0.3.x  | 0.8            |
+| 0.1.x          | 0.7            |
 
 ## Documentation
 

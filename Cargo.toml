@@ -1,6 +1,6 @@
 [package]
 name = "leptos_styling"
-version = "0.2.1"
+version = "0.3.0"
 edition = "2024"
 license = "MIT"
 authors = ["Tim Persigehl <dev@timtom2016.com>"]
@@ -16,10 +16,9 @@ readme = "README.md"
 
 [dependencies]
 leptos = "0.8.0"
-leptos_meta = "0.8.0"
 turf = { version = "0.10.1" }
-inventory = "0.3"
+inventory = {version="0.3",optional=true}
 
 [features]
-ssr = []
-csr = []
+ssr = ["dep:inventory"]
+csr = ["dep:inventory"]
