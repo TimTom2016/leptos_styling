@@ -1,7 +1,6 @@
 use crate::StyleSheet;
 use leptos::logging::log;
 use leptos::prelude::*;
-use leptos_meta::{Style, Stylesheet};
 
 /// A component that renders stylesheet links for all registered stylesheets.
 ///
