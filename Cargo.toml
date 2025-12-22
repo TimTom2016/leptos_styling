@@ -16,7 +16,6 @@ readme = "README.md"
 
 [dependencies]
 leptos = "0.8.0"
-leptos_meta = "0.8.0"
 turf = { version = "0.10.1" }
 inventory = "0.3"
 

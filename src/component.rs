@@ -24,7 +24,7 @@ pub fn StyleSheets(#[prop(default = "pkg")] base_url: &'static str) -> impl Into
         })
         .collect();
     view! {
-        {links.into_iter().map(|link| view! { <Stylesheet href={format!("{}/{link}",base_url.trim_end_matches("/"))} /> }).collect::<Vec<_>>()}
+        {links.into_iter().map(|link| view! { <link rel="stylesheet" href={format!("{}/{link}",base_url.trim_end_matches("/"))} /> }).collect::<Vec<_>>()}
     }
 }
 #[cfg(feature = "csr")]
@@ -41,6 +41,6 @@ pub fn StyleSheets(#[prop(default = "pkg")] base_url: &'static str) -> impl Into
         })
         .collect::<String>();
     view! {
-        <Style>{style_sheet_content}</Style>
+        <style>{style_sheet_content}</style>
     }
 }
