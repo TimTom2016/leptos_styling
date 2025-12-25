@@ -1,6 +1,7 @@
 use crate::StyleSheet;
 use leptos::logging::log;
 use leptos::prelude::*;
+use leptos_meta::Stylesheet as StyleSheetComponent;
 
 /// A component that renders stylesheet links for all registered stylesheets.
 ///
@@ -13,6 +14,7 @@ use leptos::prelude::*;
 #[component]
 pub fn StyleSheets(#[prop(default = "pkg")] base_url: &'static str) -> impl IntoView {
     use std::collections::HashSet;
+
     let mut seen = HashSet::new();
     let stylesheets: SharedValue<Vec<String>> = SharedValue::new(move || {
         #[cfg(any(feature = "ssr", feature = "csr"))]
@@ -37,7 +39,7 @@ pub fn StyleSheets(#[prop(default = "pkg")] base_url: &'static str) -> impl Into
         .filter(|name| seen.insert(name.clone()))
         .collect();
     view! {
-        {links.into_iter().map(|link| view! { <link rel="stylesheet" href={format!("{}/{link}",base_url.trim_end_matches("/"))} /> }).collect::<Vec<_>>()}
+        {links.into_iter().map(|link| view! { <StyleSheetComponent href={format!("{}/{link}",base_url.trim_end_matches("/"))} /> }).collect::<Vec<_>>()}
     }
 }
 #[cfg(feature = "csr")]

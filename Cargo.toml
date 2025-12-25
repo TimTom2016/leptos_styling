@@ -18,6 +18,7 @@ readme = "README.md"
 leptos = "0.8.0"
 turf = { version = "0.10.1" }
 inventory = {version="0.3",optional=true}
+leptos_meta = "0.8.5"
 
 [features]
 ssr = ["dep:inventory"]
